@@ -22,22 +22,22 @@
 
 			<div class="col-md-6">
 				<label for="title">Produto</label>
-				<input class="form-control" name="title" type="text" placeholder="Informe o produto." required>
+				<input class="form-control" name="title" type="text" placeholder="Informe o produto." value="{{ old('title') }}" required>
 			</div>
 
 			<div class="col-md-3">
 				<label for="stock">Estoque</label>
-				<input class="form-control" name="stock" type="number" placeholder="Informe quantidade em estoque." required>
+				<input class="form-control" name="stock" type="number" placeholder="Informe quantidade em estoque." value="{{ old('stock') }}" required>
 			</div>
 
 			<div class="col-md-12">
 				<label for="image">Imagem</label>
-				<input class="form-control" name="image" type="file" accept=".jpg, .jpeg, .png, .gif" required>
+				<input class="form-control" name="image" type="file" accept=".jpg, .jpeg, .png, .gif" value="{{ old('image') }}" required>
 			</div>
 
 			<div class="col-md-12">
 				<label for="description">Descrição</label>
-				<textarea style="resize: none;" class="form-control" rows="4" cols="50" name="description" placeholder="Informe a descrição do produto."></textarea>
+				<textarea style="resize: none;" class="form-control" rows="4" cols="50" name="description" placeholder="Informe a descrição do produto.">{{ old('description') }}</textarea>
 			</div>
 
 			<div class="col-md-12">

@@ -21,4 +21,6 @@ Route::post('/edit/product', 'ProductsController@update')->name('update/product'
 
 Route::get('/delete/product/{product_id}', 'ProductsController@destroy');
 
+Route::get('/show/product/{product_id}', 'ProductsController@show');
+
 

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Tag;
 use App\Products_tags;
+use DB;
+use App\Http\Controllers\ImagesController;
 
 class ProductsController extends Controller
 {
@@ -17,7 +19,11 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::orderBy('created_at', 'desc')->paginate(12);
-        $top_tags = Products_tags::raw('SELECT count(*) as top_tags, id_tag FROM products_tags GROUP BY id_tag ORDER BY top_tags DESC')->limit(10)->get();
+
+        $top_tags = Products_tags::select(DB::raw('count(*) as top_tags, id_tag'))
+        ->groupBy('id_tag')
+        ->orderBy('top_tags', 'desc')
+        ->get();
 
         $data = array(
             'products' => $products,
@@ -27,26 +33,6 @@ class ProductsController extends Controller
         return view('products.products', $data);
     }
 
-
-    public function upload($request)
-    {
-        if ($request->hasFile('image')) 
-        {
-            $file = $request->file('image');
-
-            if (empty($file)) 
-            {
-                return false;
-            }
-
-            $path = $file->store('images', 'images');
-            return $path;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -89,20 +75,23 @@ class ProductsController extends Controller
         $product->title = $request->title;
         $product->description = $request->description;
         $product->stock = $request->stock;
-        $product->image = explode("/", self::upload($request))[1];
+        $product->image = explode("/", ImagesController::upload($request))[1];
 
         if($product->image)
         {
             $product->save();
 
-            foreach($request->tags as $tag)
+            if($request->tags)
             {
-                $products_tags = new Products_tags;
+                foreach($request->tags as $tag)
+                {
+                    $products_tags = new Products_tags;
 
-                $products_tags->id_tag = $tag;
-                $products_tags->id_product = $product->id;
+                    $products_tags->id_tag = $tag;
+                    $products_tags->id_product = $product->id;
 
-                $products_tags->save();
+                    $products_tags->save();
+                }
             }
 
             return back()->with('success', 'Produto cadastrado com sucesso!')->withInput($request->input());
@@ -122,7 +111,9 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+
+        return view('products.product', compact('product'));
     }
 
     /**

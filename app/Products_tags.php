@@ -12,11 +12,11 @@ class Products_tags extends Model
 
 	public function product()
 	{
-		return $this->hasMany('App\Product', 'products', 'id_product', 'id');
+		return $this->hasOne('App\Product', 'id', 'id_product');
 	}
 
 	public function tag()
 	{
-		return $this->hasMany('App\Tag', 'tags', 'id_tag', 'id');
+		return $this->hasOne('App\Tag', 'id', 'id_tag');
 	}
 }
