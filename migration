@@ -1,3 +1,19 @@
+$this->validate($request, [
+				'name' => 'required',
+				'phone' => 'required',
+				'street' => 'required',
+				'number' => 'required',
+				'city' => 'required',
+				'estate' => 'required',
+			]);
+
+public function person_address()
+	{
+
+		return $this->hasOne('App\Address', 'person_id', 'id');
+
+	}
+            
 Schema::create('address', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->unsigned();
             $table->String('street');
