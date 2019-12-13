@@ -1,0 +1,10 @@
+Schema::create('address', function (Blueprint $table) {
+            $table->integer('id')->autoIncrement()->unsigned();
+            $table->String('street');
+            $table->String('number');
+            $table->String('city');
+            $table->String('estate');
+            $table->integer('person_id')->unsigned();
+            $table->foreign('person_id')->references('id')->on('persons');
+            $table->timestamps();
+        });
